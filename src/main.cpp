@@ -1,6 +1,10 @@
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
-    #include <wx/wx.h>
+    #include <wx/app.h>
+    #include <wx/event.h>
+    #include <wx/frame.h>
+    #include <wx/menu.h>
+    #include <wx/msgdlg.h> 
 #endif
 
 class MyApp : public wxApp
