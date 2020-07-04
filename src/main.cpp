@@ -7,6 +7,8 @@
     #include <wx/msgdlg.h> 
 #endif
 
+#include "chess_board/chessboard.h"
+
 class MyApp : public wxApp
 {
 public:
@@ -51,6 +53,9 @@ MyFrame::MyFrame()
     Bind(wxEVT_MENU, &MyFrame::OnHello, this, ID_Hello);
     Bind(wxEVT_MENU, &MyFrame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT);
+
+    using namespace loloof64;
+    new ChessBoard(this, 400);
 }
 void MyFrame::OnExit(wxCommandEvent& event)
 {

@@ -3,14 +3,26 @@
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
+    #include <wx/dc.h>
+    #include <wx/dcclient.h>
+    #include <wx/event.h>
+    #include <wx/gdicmn.h>
     #include <wx/panel.h>
+    #include <wx/window.h>
 #endif
 
 namespace loloof64 {
-    class ChessBoard {
+    class ChessBoard : public wxPanel {
     public:
-        ChessBoard();
+        ChessBoard(wxWindow *parent, int size);
         virtual ~ChessBoard();    
+        void paintEvent(wxPaintEvent & evt);
+        void refresh();
+    private:
+        int _size;
+        void render(wxDC& dc);
+
+        wxDECLARE_EVENT_TABLE();
     };
 };
 #endif
