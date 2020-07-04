@@ -9,6 +9,8 @@
 
 #include "chess_board/chessboard.h"
 
+#define CHESS_BOARD_SIZE 400
+
 class MyApp : public wxApp
 {
 public:
@@ -35,7 +37,7 @@ bool MyApp::OnInit()
     return true;
 }
 MyFrame::MyFrame()
-    : wxFrame(NULL, wxID_ANY, "Chess Pgn Reviser")
+    : wxFrame(NULL, wxID_ANY, "Chess Pgn Reviser", wxDefaultPosition, wxSize(CHESS_BOARD_SIZE, CHESS_BOARD_SIZE + 50))
 {
     wxMenu *menuFile = new wxMenu;
     menuFile->Append(ID_Hello, "&Hello...\tCtrl-H",
@@ -55,7 +57,7 @@ MyFrame::MyFrame()
     Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT);
 
     using namespace loloof64;
-    new ChessBoard(this, 400);
+    new ChessBoard(this, CHESS_BOARD_SIZE);
 }
 void MyFrame::OnExit(wxCommandEvent& event)
 {
