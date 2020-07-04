@@ -9,11 +9,13 @@ ADD_DEFINITIONS(-Wall -Wno-sign-compare -O2)
 
 set(SRCS
     src/main.cpp
-    src/chess_board/chessboard.cpp
+    src/gui/chessboard.cpp
+    src/gui/main_window.cpp
 )
 
 set(HEADERS
-    src/chess_board/chessboard.h
+    src/gui/chessboard.h
+    src/gui/main_window.h
 )
 
 add_executable(ChessPgnReviser ${SRCS} ${HEADERS})

@@ -1,74 +1,20 @@
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
     #include <wx/app.h>
-    #include <wx/event.h>
-    #include <wx/frame.h>
-    #include <wx/menu.h>
-    #include <wx/msgdlg.h> 
 #endif
 
-#include "chess_board/chessboard.h"
-
-#define CHESS_BOARD_SIZE 400
+#include "gui/main_window.h"
 
 class MyApp : public wxApp
 {
 public:
     virtual bool OnInit();
 };
-class MyFrame : public wxFrame
-{
-public:
-    MyFrame();
-private:
-    void OnHello(wxCommandEvent& event);
-    void OnExit(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
-};
-enum
-{
-    ID_Hello = 1
-};
+
 wxIMPLEMENT_APP(MyApp);
 bool MyApp::OnInit()
 {
-    MyFrame *frame = new MyFrame();
-    frame->Show(true);
+    MainWindow *mainWindow = new MainWindow();
+    mainWindow->Show(true);
     return true;
-}
-MyFrame::MyFrame()
-    : wxFrame(NULL, wxID_ANY, "Chess Pgn Reviser", wxDefaultPosition, wxSize(CHESS_BOARD_SIZE, CHESS_BOARD_SIZE + 50))
-{
-    wxMenu *menuFile = new wxMenu;
-    menuFile->Append(ID_Hello, "&Hello...\tCtrl-H",
-                     "Help string shown in status bar for this menu item");
-    menuFile->AppendSeparator();
-    menuFile->Append(wxID_EXIT);
-    wxMenu *menuHelp = new wxMenu;
-    menuHelp->Append(wxID_ABOUT);
-    wxMenuBar *menuBar = new wxMenuBar;
-    menuBar->Append(menuFile, "&File");
-    menuBar->Append(menuHelp, "&Help");
-    SetMenuBar( menuBar );
-    CreateStatusBar();
-    SetStatusText("Welcome to Chess Pgn Reviser !");
-    Bind(wxEVT_MENU, &MyFrame::OnHello, this, ID_Hello);
-    Bind(wxEVT_MENU, &MyFrame::OnAbout, this, wxID_ABOUT);
-    Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT);
-
-    using namespace loloof64;
-    new ChessBoard(this, CHESS_BOARD_SIZE);
-}
-void MyFrame::OnExit(wxCommandEvent& event)
-{
-    Close(true);
-}
-void MyFrame::OnAbout(wxCommandEvent& event)
-{
-    wxMessageBox("Chess Pgn Reviser is a simple application in order to help you train yourself with chess pgn files.",
-                 "About Chess Pgn Reviser", wxOK | wxICON_INFORMATION);
-}
-void MyFrame::OnHello(wxCommandEvent& event)
-{
-    wxLogMessage("Hello world Chess Pgn Reviser !");
 }
