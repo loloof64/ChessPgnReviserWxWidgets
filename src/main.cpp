@@ -29,7 +29,7 @@ bool MyApp::OnInit()
     return true;
 }
 MyFrame::MyFrame()
-    : wxFrame(NULL, wxID_ANY, "Hello World")
+    : wxFrame(NULL, wxID_ANY, "Chess Pgn Reviser")
 {
     wxMenu *menuFile = new wxMenu;
     menuFile->Append(ID_Hello, "&Hello...\tCtrl-H",
@@ -43,7 +43,7 @@ MyFrame::MyFrame()
     menuBar->Append(menuHelp, "&Help");
     SetMenuBar( menuBar );
     CreateStatusBar();
-    SetStatusText("Welcome to wxWidgets!");
+    SetStatusText("Welcome to Chess Pgn Reviser !");
     Bind(wxEVT_MENU, &MyFrame::OnHello, this, ID_Hello);
     Bind(wxEVT_MENU, &MyFrame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT);
@@ -54,10 +54,10 @@ void MyFrame::OnExit(wxCommandEvent& event)
 }
 void MyFrame::OnAbout(wxCommandEvent& event)
 {
-    wxMessageBox("This is a wxWidgets Hello World example",
-                 "About Hello World", wxOK | wxICON_INFORMATION);
+    wxMessageBox("Chess Pgn Reviser is a simple application in order to help you train yourself with chess pgn files.",
+                 "About Chess Pgn Reviser", wxOK | wxICON_INFORMATION);
 }
 void MyFrame::OnHello(wxCommandEvent& event)
 {
-    wxLogMessage("Hello world from wxWidgets!");
+    wxLogMessage("Hello world Chess Pgn Reviser !");
 }
