@@ -5,6 +5,8 @@ project(ChessPgnReviser VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+ADD_DEFINITIONS(-Wall -Wno-sign-compare -O2)
+
 set(SRCS
     src/main.cpp
 )
