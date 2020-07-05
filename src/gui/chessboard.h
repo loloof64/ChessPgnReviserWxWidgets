@@ -8,8 +8,10 @@
     #include <wx/dcclient.h>
     #include <wx/event.h>
     #include <wx/gdicmn.h>
+    #include <wx/font.h>
     #include <wx/panel.h>
     #include <wx/pen.h>
+    #include <wx/string.h>
     #include <wx/window.h>
 #endif
 
@@ -26,6 +28,7 @@ namespace loloof64 {
 
         void drawBackground(wxDC& dc);
         void drawCells(wxDC &dc);
+        void drawCoordinates(wxDC &dc);
 
         wxDECLARE_EVENT_TABLE();
     };
