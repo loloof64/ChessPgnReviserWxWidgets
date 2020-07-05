@@ -53,6 +53,7 @@ namespace loloof64
         drawCells(dc);
         drawCoordinates(dc);
         drawPieces(dc);
+        drawPlayerTurn(dc);
     }
 
     void ChessBoard::drawBackground(wxDC &dc)
@@ -151,6 +152,19 @@ namespace loloof64
                 }
             }
         }
+    }
+
+    void ChessBoard::drawPlayerTurn(wxDC &dc) {
+        auto cellsSize = _size * 1.0 / 9.0;
+        auto whiteTurn = _boardLogic.isWhiteTurn();
+        auto color = whiteTurn ? *wxWHITE : *wxBLACK;
+
+        auto x = (int) (cellsSize*8.70);
+        auto y = (int) (cellsSize*8.70);
+        auto radius = (int) (cellsSize*0.20);
+
+        dc.SetBrush(wxBrush(color));
+        dc.DrawCircle(x, y, radius);
     }
 
     void ChessBoard::loadImages()

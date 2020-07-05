@@ -41,6 +41,7 @@ namespace loloof64 {
         void drawCells(wxDC &dc);
         void drawCoordinates(wxDC &dc);
         void drawPieces(wxDC &dc);
+        void drawPlayerTurn(wxDC &dc);
 
         NSVGimage *_whitePawnSvg;
         NSVGimage *_whiteKnightSvg;
