@@ -39,7 +39,30 @@ namespace loloof64 {
         void drawPieces(wxDC &dc);
 
         NSVGimage *_whitePawnSvg;
+        NSVGimage *_whiteKnightSvg;
+        NSVGimage *_whiteBishopSvg;
+        NSVGimage *_whiteRookSvg;
+        NSVGimage *_whiteQueenSvg;
+        NSVGimage *_whiteKingSvg;
+        NSVGimage *_blackPawnSvg;
+        NSVGimage *_blackKnightSvg;
+        NSVGimage *_blackBishopSvg;
+        NSVGimage *_blackRookSvg;
+        NSVGimage *_blackQueenSvg;
+        NSVGimage *_blackKingSvg;
+
         wxBitmap _whitePawnBitmap;
+        wxBitmap _whiteKnightBitmap;
+        wxBitmap _whiteBishopBitmap;
+        wxBitmap _whiteRookBitmap;
+        wxBitmap _whiteQueenBitmap;
+        wxBitmap _whiteKingBitmap;
+        wxBitmap _blackPawnBitmap;
+        wxBitmap _blackKnightBitmap;
+        wxBitmap _blackBishopBitmap;
+        wxBitmap _blackRookBitmap;
+        wxBitmap _blackQueenBitmap;
+        wxBitmap _blackKingBitmap;
 
         wxDECLARE_EVENT_TABLE();
     };
