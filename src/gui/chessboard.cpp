@@ -21,7 +21,12 @@ namespace loloof64 {
     }
 
     void ChessBoard::render(wxDC &dc) {
-        dc.SetBrush(*wxBLUE_BRUSH);
+        drawBackground(dc);
+    }
+
+    void ChessBoard::drawBackground(wxDC &dc) {
+        wxColour backgroundColor(30, 60, 250);
+        dc.SetBrush(backgroundColor);
         dc.DrawRectangle(0,0,_size,_size);
     }
 

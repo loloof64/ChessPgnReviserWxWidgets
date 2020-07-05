@@ -3,6 +3,7 @@
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
+    #include <wx/colour.h>
     #include <wx/dc.h>
     #include <wx/dcclient.h>
     #include <wx/event.h>
@@ -21,6 +22,8 @@ namespace loloof64 {
     private:
         int _size;
         void render(wxDC& dc);
+
+        void drawBackground(wxDC& dc);
 
         wxDECLARE_EVENT_TABLE();
     };
