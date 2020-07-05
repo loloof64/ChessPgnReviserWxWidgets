@@ -9,6 +9,7 @@
     #include <wx/event.h>
     #include <wx/gdicmn.h>
     #include <wx/panel.h>
+    #include <wx/pen.h>
     #include <wx/window.h>
 #endif
 
@@ -24,6 +25,7 @@ namespace loloof64 {
         void render(wxDC& dc);
 
         void drawBackground(wxDC& dc);
+        void drawCells(wxDC &dc);
 
         wxDECLARE_EVENT_TABLE();
     };
