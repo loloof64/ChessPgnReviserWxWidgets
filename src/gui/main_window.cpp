@@ -1,5 +1,5 @@
 #include "main_window.h"
-#include "chessboard.h"
+#include "chess_board/chessboard.h"
 
 MainWindow::MainWindow()
     : wxFrame(NULL, wxID_ANY, "Chess Pgn Reviser", wxDefaultPosition, wxSize(CHESS_BOARD_SIZE, CHESS_BOARD_SIZE + 50))
