@@ -10,7 +10,7 @@
     #include <wx/msgdlg.h> 
 #endif
 
-#define CHESS_BOARD_SIZE 400
+#define CHESS_BOARD_SIZE 600
 
 class MainWindow : public wxFrame
 {

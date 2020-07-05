@@ -47,6 +47,11 @@ namespace loloof64
         render(dc);
     }
 
+    void ChessBoard::setReversed(bool reversed) {
+        _reversed = reversed;
+        refresh();
+    }
+
     void ChessBoard::render(wxDC &dc)
     {
         drawBackground(dc);
@@ -107,7 +112,8 @@ namespace loloof64
             auto y1 = cellsSize * 0.05;
             auto y2 = cellsSize * 8.45;
 
-            auto value = LETTER_A + col;
+            auto file = _reversed ? 7-col : col;
+            auto value = LETTER_A + file;
             auto text = wxString::FromAscii(value);
 
             dc.DrawText(text, x, y1);
@@ -121,7 +127,8 @@ namespace loloof64
             auto x1 = cellsSize * 0.15;
             auto x2 = cellsSize * 8.6;
 
-            auto value = DIGIT_1 + (7 - row);
+            auto rank = _reversed ? row : 7-row;
+            auto value = DIGIT_1 + rank;
             auto text = wxString::FromAscii(value);
 
             dc.DrawText(text, x1, y);
@@ -137,8 +144,8 @@ namespace loloof64
         {
             for (auto col = 0; col < 8; col++)
             {
-                auto file = col;
-                auto rank = 7-row;
+                auto file = _reversed ? 7-col : col;
+                auto rank = _reversed ? row : 7-row;
                 
                 auto pieceFen = _boardLogic.getPieceFenAt(file, rank);
                 auto isOccupiedCell = pieceFen != ' ';

@@ -28,7 +28,9 @@ namespace loloof64 {
         virtual ~ChessBoard();    
         void paintEvent(wxPaintEvent & evt);
         void refresh();
+        void setReversed(bool reversed);
     private:
+        bool _reversed;
         int _size;
         ThcPosition _boardLogic;
 
