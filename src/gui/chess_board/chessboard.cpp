@@ -1,5 +1,6 @@
 #include "chessboard.h"
 #include <iostream>
+#include <string>
 
 extern "C" char Chess_plt45_svg[];
 extern "C" char Chess_nlt45_svg[];
@@ -20,9 +21,12 @@ extern "C" char Chess_kdt45_svg[];
 #define NANOSVGRAST_IMPLEMENTATION
 #include "nanosvgrast.h"
 
+std::string DEFAULT_CHESS_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
 namespace loloof64
 {
-    ChessBoard::ChessBoard(wxWindow *parent, int size) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(size, size)), _size(size)
+    ChessBoard::ChessBoard(wxWindow *parent, int size) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(size, size)), 
+    _size(size), _boardLogic(DEFAULT_CHESS_POSITION)
     {
         loadImages();
     }
@@ -132,12 +136,18 @@ namespace loloof64
         {
             for (auto col = 0; col < 8; col++)
             {
-                if (_whiteKnightBitmap.IsOk())
+                auto file = col;
+                auto rank = 7-row;
+                
+                auto pieceFen = _boardLogic.getPieceFenAt(file, rank);
+                auto isOccupiedCell = pieceFen != ' ';
+                if (isOccupiedCell)
                 {
                     auto x = (int)cellsSize * (col + 0.5);
                     auto y = (int)cellsSize * (row + 0.5);
+                    auto bitmap = getPieceBitmap(pieceFen);
 
-                    dc.DrawBitmap(_blackQueenBitmap, x, y, true);
+                    dc.DrawBitmap(bitmap, x, y, true);
                 }
             }
         }
@@ -221,6 +231,32 @@ namespace loloof64
         free(image_buffer);
 
         return bitmap;
+    }
+
+    wxBitmap ChessBoard::getPieceBitmap(char pieceFen) {
+        switch (pieceFen)
+        {
+        case 'P': return _whitePawnBitmap;
+        case 'N': return _whiteKnightBitmap;
+        case 'B': return _whiteBishopBitmap;
+        case 'R': return _whiteRookBitmap;
+        case 'Q': return _whiteQueenBitmap;
+        case 'K': return _whiteKingBitmap;
+        case 'p': return _blackPawnBitmap;
+        case 'n': return _blackKnightBitmap;
+        case 'b': return _blackBishopBitmap;
+        case 'r': return _blackRookBitmap;
+        case 'q': return _blackQueenBitmap;
+        case 'k': return _blackKingBitmap;
+        
+        default:
+            std::string errorMessage = "Not a piece fen : ";
+            errorMessage += pieceFen;
+            errorMessage += " !";
+
+            throw errorMessage;
+            break;
+        }
     }
 
     wxBEGIN_EVENT_TABLE(ChessBoard, wxPanel)

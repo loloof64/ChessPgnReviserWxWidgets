@@ -17,6 +17,8 @@
     #include <wx/window.h>
 #endif
 
+#include "ThcPosition.h"
+
 struct NSVGimage;
 
 namespace loloof64 {
@@ -28,9 +30,11 @@ namespace loloof64 {
         void refresh();
     private:
         int _size;
+        ThcPosition _boardLogic;
 
         void loadImages();
         wxBitmap generateBitmapFromSvgData(NSVGimage *svgData, int bitmapSize);
+        wxBitmap getPieceBitmap(char pieceFen);
         void render(wxDC& dc);
 
         void drawBackground(wxDC& dc);

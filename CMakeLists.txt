@@ -37,15 +37,33 @@ create_resources(
 set(SRCS
     src/main.cpp
     src/gui/chess_board/chessboard.cpp
+    src/gui/chess_board/ThcPosition.cpp
     src/gui/chess_board/pieces_resources.c
     src/gui/main_window.cpp
+    src/libs/thc-chess-library/ChessPosition.cpp
+    src/libs/thc-chess-library/ChessRules.cpp
+    src/libs/thc-chess-library/Move.cpp
+    src/libs/thc-chess-library/PrivateChessDefs.cpp
+    src/libs/thc-chess-library/util.cpp
 )
 
 set(HEADERS
     src/gui/chess_board/chessboard.h
+    src/gui/chess_board/IPosition.h
+    src/gui/chess_board/ThcPosition.h
     src/gui/chess_board/nanosvg.h
     src/gui/chess_board/nanosvgrast.h
     src/gui/main_window.h
+    src/libs/thc-chess-library/ChessDefs.h
+    src/libs/thc-chess-library/ChessPosition.h
+    src/libs/thc-chess-library/ChessPositionRaw.h
+    src/libs/thc-chess-library/ChessRules.h
+    src/libs/thc-chess-library/DebugPrintf.h
+    src/libs/thc-chess-library/GeneratedLookupTables.h
+    src/libs/thc-chess-library/HashLookup.h
+    src/libs/thc-chess-library/Move.h
+    src/libs/thc-chess-library/PrivateChessDefs.h
+    src/libs/thc-chess-library/util.h
 )
 
 add_executable(ChessPgnReviser ${SRCS} ${HEADERS})
