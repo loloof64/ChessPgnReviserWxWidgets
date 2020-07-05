@@ -81,7 +81,7 @@ namespace loloof64 {
         const char DIGIT_1 = '1';
         for (auto row = 0; row < 8; row++) {
             auto y = cellsSize * (0.8 + row);
-            auto x1 = cellsSize * 0.1;
+            auto x1 = cellsSize * 0.15;
             auto x2 = cellsSize * 8.6;
 
             auto value = DIGIT_1 + (7-row);
