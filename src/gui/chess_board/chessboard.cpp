@@ -31,6 +31,7 @@ namespace loloof64
     ChessBoard::ChessBoard(wxWindow *parent, int size) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(size, size)),
                                                          _boardLogic(DEFAULT_CHESS_POSITION)
     {
+        SetBackgroundStyle(wxBG_STYLE_PAINT);
         loadImages(size);
     }
 
@@ -38,11 +39,10 @@ namespace loloof64
     {
     }
 
-    void ChessBoard::paintEvent(wxPaintEvent &evt)
-    {
+    void ChessBoard::paintEvent(wxPaintEvent &evt) {
         wxPaintDC dc(this);
         render(dc);
-        evt->Skip();
+        evt.Skip();
     }
 
     void ChessBoard::refresh()
@@ -318,16 +318,16 @@ namespace loloof64
     }
 
     void ChessBoard::leftMouseButtonDownEvent(wxMouseEvent &evt) {
-        auto mousePosition = 
+        //auto mousePosition = 
         _dndInProgress = true;
 
-        evt->Skip();
+        evt.Skip();
     }
 
     void ChessBoard::leftMouseButtonUpEvent(wxMouseEvent &evt) {
         _dndInProgress = false;
 
-        evt->Skip();
+        evt.Skip();
     }
 
     void ChessBoard::mouseButtonMotionEvent(wxMouseEvent &evt) {
@@ -335,7 +335,7 @@ namespace loloof64
             
         }
 
-        evt->Skip();
+        evt.Skip();
     }
 
     wxBEGIN_EVENT_TABLE(ChessBoard, wxPanel)
