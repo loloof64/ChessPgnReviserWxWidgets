@@ -7,10 +7,11 @@
     #include <wx/frame.h>
     #include <wx/log.h> 
     #include <wx/menu.h>
-    #include <wx/msgdlg.h> 
+    #include <wx/msgdlg.h>
+    #include <wx/sizer.h>
 #endif
 
-#define CHESS_BOARD_SIZE 600
+#define CHESS_BOARD_SIZE 300
 
 class MainWindow : public wxFrame
 {
