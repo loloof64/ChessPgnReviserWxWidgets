@@ -1,6 +1,9 @@
 #include "chessboard.h"
-#include <iostream>
 #include <string>
+
+//////////////////////////
+#include <iostream>
+//////////////////////////
 
 extern "C" char Chess_plt45_svg[];
 extern "C" char Chess_nlt45_svg[];
@@ -25,8 +28,8 @@ std::string DEFAULT_CHESS_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBN
 
 namespace loloof64
 {
-    ChessBoard::ChessBoard(wxWindow *parent, int size) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(size, size)), 
-    _boardLogic(DEFAULT_CHESS_POSITION)
+    ChessBoard::ChessBoard(wxWindow *parent, int size) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(size, size)),
+                                                         _boardLogic(DEFAULT_CHESS_POSITION)
     {
         loadImages(size);
     }
@@ -47,7 +50,8 @@ namespace loloof64
         render(dc);
     }
 
-    void ChessBoard::setReversed(bool reversed) {
+    void ChessBoard::setReversed(bool reversed)
+    {
         _reversed = reversed;
         refresh();
     }
@@ -55,7 +59,8 @@ namespace loloof64
     void ChessBoard::render(wxDC &dc)
     {
         auto size = getShortestSize();
-        if (_currentSize != size) {
+        if (_currentSize != size)
+        {
             updateImagesSize(size);
             _currentSize = size;
         }
@@ -123,7 +128,7 @@ namespace loloof64
             auto y1 = cellsSize * 0.05;
             auto y2 = cellsSize * 8.45;
 
-            auto file = _reversed ? 7-col : col;
+            auto file = _reversed ? 7 - col : col;
             auto value = LETTER_A + file;
             auto text = wxString::FromAscii(value);
 
@@ -138,7 +143,7 @@ namespace loloof64
             auto x1 = cellsSize * 0.15;
             auto x2 = cellsSize * 8.6;
 
-            auto rank = _reversed ? row : 7-row;
+            auto rank = _reversed ? row : 7 - row;
             auto value = DIGIT_1 + rank;
             auto text = wxString::FromAscii(value);
 
@@ -156,9 +161,9 @@ namespace loloof64
         {
             for (auto col = 0; col < 8; col++)
             {
-                auto file = _reversed ? 7-col : col;
-                auto rank = _reversed ? row : 7-row;
-                
+                auto file = _reversed ? 7 - col : col;
+                auto rank = _reversed ? row : 7 - row;
+
                 auto pieceFen = _boardLogic.getPieceFenAt(file, rank);
                 auto isOccupiedCell = pieceFen != ' ';
                 if (isOccupiedCell)
@@ -173,15 +178,16 @@ namespace loloof64
         }
     }
 
-    void ChessBoard::drawPlayerTurn(wxDC &dc) {
+    void ChessBoard::drawPlayerTurn(wxDC &dc)
+    {
         auto size = getShortestSize();
         auto cellsSize = size * 1.0 / 9.0;
         auto whiteTurn = _boardLogic.isWhiteTurn();
         auto color = whiteTurn ? *wxWHITE : *wxBLACK;
 
-        auto x = (int) (cellsSize*8.70);
-        auto y = (int) (cellsSize*8.70);
-        auto radius = (int) (cellsSize*0.20);
+        auto x = (int)(cellsSize * 8.70);
+        auto y = (int)(cellsSize * 8.70);
+        auto radius = (int)(cellsSize * 0.20);
 
         dc.SetBrush(wxBrush(color));
         dc.DrawCircle(x, y, radius);
@@ -206,7 +212,8 @@ namespace loloof64
         updateImagesSize(size);
     }
 
-    void ChessBoard::updateImagesSize(int size) {
+    void ChessBoard::updateImagesSize(int size)
+    {
         auto cellsSize = (int)(size * 1.0 / 9.0);
 
         _whitePawnBitmap = generateBitmapFromSvgData(_whitePawnSvg, cellsSize);
@@ -215,7 +222,7 @@ namespace loloof64
         _whiteRookBitmap = generateBitmapFromSvgData(_whiteRookSvg, cellsSize);
         _whiteQueenBitmap = generateBitmapFromSvgData(_whiteQueenSvg, cellsSize);
         _whiteKingBitmap = generateBitmapFromSvgData(_whiteKingSvg, cellsSize);
-        
+
         _blackPawnBitmap = generateBitmapFromSvgData(_blackPawnSvg, cellsSize);
         _blackKnightBitmap = generateBitmapFromSvgData(_blackKnightSvg, cellsSize);
         _blackBishopBitmap = generateBitmapFromSvgData(_blackBishopSvg, cellsSize);
@@ -232,9 +239,9 @@ namespace loloof64
         bitmap.Create(bitmapSize, bitmapSize, 32);
 
         NSVGrasterizer *rast = nsvgCreateRasterizer();
-        unsigned char *image_buffer = (unsigned char *) malloc(bitmapSize * bitmapSize * 4);
+        unsigned char *image_buffer = (unsigned char *)malloc(bitmapSize * bitmapSize * 4);
 
-        float scale = (float) bitmapSize / svgData->width;
+        float scale = (float)bitmapSize / svgData->width;
         nsvgRasterize(rast, svgData, 0, 0, scale, image_buffer, bitmapSize, bitmapSize, bitmapSize * 4);
 
         wxAlphaPixelData bmdata(bitmap);
@@ -261,7 +268,8 @@ namespace loloof64
         return bitmap;
     }
 
-    int ChessBoard::getShortestSize() const {
+    int ChessBoard::getShortestSize() const
+    {
         auto bothSides = GetSize();
         auto width = bothSides.GetWidth();
         auto height = bothSides.GetHeight();
@@ -269,22 +277,35 @@ namespace loloof64
         return width < height ? width : height;
     }
 
-    wxBitmap ChessBoard::getPieceBitmap(char pieceFen) {
+    wxBitmap ChessBoard::getPieceBitmap(char pieceFen)
+    {
         switch (pieceFen)
         {
-        case 'P': return _whitePawnBitmap;
-        case 'N': return _whiteKnightBitmap;
-        case 'B': return _whiteBishopBitmap;
-        case 'R': return _whiteRookBitmap;
-        case 'Q': return _whiteQueenBitmap;
-        case 'K': return _whiteKingBitmap;
-        case 'p': return _blackPawnBitmap;
-        case 'n': return _blackKnightBitmap;
-        case 'b': return _blackBishopBitmap;
-        case 'r': return _blackRookBitmap;
-        case 'q': return _blackQueenBitmap;
-        case 'k': return _blackKingBitmap;
-        
+        case 'P':
+            return _whitePawnBitmap;
+        case 'N':
+            return _whiteKnightBitmap;
+        case 'B':
+            return _whiteBishopBitmap;
+        case 'R':
+            return _whiteRookBitmap;
+        case 'Q':
+            return _whiteQueenBitmap;
+        case 'K':
+            return _whiteKingBitmap;
+        case 'p':
+            return _blackPawnBitmap;
+        case 'n':
+            return _blackKnightBitmap;
+        case 'b':
+            return _blackBishopBitmap;
+        case 'r':
+            return _blackRookBitmap;
+        case 'q':
+            return _blackQueenBitmap;
+        case 'k':
+            return _blackKingBitmap;
+
         default:
             std::string errorMessage = "Not a piece fen : ";
             errorMessage += pieceFen;
@@ -295,7 +316,26 @@ namespace loloof64
         }
     }
 
+    void ChessBoard::leftMouseButtonDownEvent(wxMouseEvent &evt) {
+        _dndInProgress = true;
+        std::cout << "Start drag" << std::endl;
+    }
+
+    void ChessBoard::leftMouseButtonUpEvent(wxMouseEvent &evt) {
+        _dndInProgress = false;
+        std::cout << "End drag" << std::endl;
+    }
+
+    void ChessBoard::mouseButtonMotionEvent(wxMouseEvent &evt) {
+        if (_dndInProgress) {
+            std::cout << "During drag" << std::endl;
+        }
+    }
+
     wxBEGIN_EVENT_TABLE(ChessBoard, wxPanel)
         EVT_PAINT(ChessBoard::paintEvent)
-            wxEND_EVENT_TABLE()
+        EVT_LEFT_DOWN(ChessBoard::leftMouseButtonDownEvent)
+        EVT_LEFT_UP(ChessBoard::leftMouseButtonUpEvent)
+        EVT_MOTION(ChessBoard::mouseButtonMotionEvent)
+    wxEND_EVENT_TABLE()
 } // namespace loloof64

@@ -27,10 +27,14 @@ namespace loloof64 {
         ChessBoard(wxWindow *parent, int size);
         virtual ~ChessBoard();    
         void paintEvent(wxPaintEvent & evt);
+        void leftMouseButtonDownEvent(wxMouseEvent & evt);
+        void leftMouseButtonUpEvent(wxMouseEvent & evt);
+        void mouseButtonMotionEvent(wxMouseEvent & evt);
         void refresh();
         void setReversed(bool reversed);
     private:
         bool _reversed;
+        bool _dndInProgress;
         // Just in order to know if we need to adjusts pieces size,
         // based on paint event dc's size.
         int _currentSize;
