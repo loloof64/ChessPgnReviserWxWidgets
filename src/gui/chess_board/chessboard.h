@@ -31,9 +31,13 @@ namespace loloof64 {
         void setReversed(bool reversed);
     private:
         bool _reversed;
+        // Just in order to know if we need to adjusts pieces size,
+        // based on paint event dc's size.
+        int _currentSize;
         ThcPosition _boardLogic;
 
         void loadImages(int size);
+        void updateImagesSize(int size);
         int getShortestSize() const;
         wxBitmap generateBitmapFromSvgData(NSVGimage *svgData, int bitmapSize);
         wxBitmap getPieceBitmap(char pieceFen);

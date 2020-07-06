@@ -54,6 +54,12 @@ namespace loloof64
 
     void ChessBoard::render(wxDC &dc)
     {
+        auto size = getShortestSize();
+        if (_currentSize != size) {
+            updateImagesSize(size);
+            _currentSize = size;
+        }
+
         drawBackground(dc);
         drawCells(dc);
         drawCoordinates(dc);
@@ -183,45 +189,39 @@ namespace loloof64
 
     void ChessBoard::loadImages(int size)
     {
+        _whitePawnSvg = nsvgParse(Chess_plt45_svg, "px", 45.0f);
+        _whiteKnightSvg = nsvgParse(Chess_nlt45_svg, "px", 45.0f);
+        _whiteBishopSvg = nsvgParse(Chess_blt45_svg, "px", 45.0f);
+        _whiteRookSvg = nsvgParse(Chess_rlt45_svg, "px", 45.0f);
+        _whiteQueenSvg = nsvgParse(Chess_qlt45_svg, "px", 45.0f);
+        _whiteKingSvg = nsvgParse(Chess_klt45_svg, "px", 45.0f);
+
+        _blackPawnSvg = nsvgParse(Chess_pdt45_svg, "px", 45.0f);
+        _blackKnightSvg = nsvgParse(Chess_ndt45_svg, "px", 45.0f);
+        _blackBishopSvg = nsvgParse(Chess_bdt45_svg, "px", 45.0f);
+        _blackRookSvg = nsvgParse(Chess_rdt45_svg, "px", 45.0f);
+        _blackQueenSvg = nsvgParse(Chess_qdt45_svg, "px", 45.0f);
+        _blackKingSvg = nsvgParse(Chess_kdt45_svg, "px", 45.0f);
+
+        updateImagesSize(size);
+    }
+
+    void ChessBoard::updateImagesSize(int size) {
         auto cellsSize = (int)(size * 1.0 / 9.0);
 
-        _whitePawnSvg = nsvgParse(Chess_plt45_svg, "px", 45.0f);
         _whitePawnBitmap = generateBitmapFromSvgData(_whitePawnSvg, cellsSize);
-
-        _whiteKnightSvg = nsvgParse(Chess_nlt45_svg, "px", 45.0f);
         _whiteKnightBitmap = generateBitmapFromSvgData(_whiteKnightSvg, cellsSize);
-
-        _whiteBishopSvg = nsvgParse(Chess_blt45_svg, "px", 45.0f);
         _whiteBishopBitmap = generateBitmapFromSvgData(_whiteBishopSvg, cellsSize);
-
-        _whiteRookSvg = nsvgParse(Chess_rlt45_svg, "px", 45.0f);
         _whiteRookBitmap = generateBitmapFromSvgData(_whiteRookSvg, cellsSize);
-
-        _whiteQueenSvg = nsvgParse(Chess_qlt45_svg, "px", 45.0f);
         _whiteQueenBitmap = generateBitmapFromSvgData(_whiteQueenSvg, cellsSize);
-
-        _whiteKingSvg = nsvgParse(Chess_klt45_svg, "px", 45.0f);
         _whiteKingBitmap = generateBitmapFromSvgData(_whiteKingSvg, cellsSize);
         
-        _blackPawnSvg = nsvgParse(Chess_pdt45_svg, "px", 45.0f);
         _blackPawnBitmap = generateBitmapFromSvgData(_blackPawnSvg, cellsSize);
-
-        _blackKnightSvg = nsvgParse(Chess_ndt45_svg, "px", 45.0f);
         _blackKnightBitmap = generateBitmapFromSvgData(_blackKnightSvg, cellsSize);
-
-        _blackBishopSvg = nsvgParse(Chess_bdt45_svg, "px", 45.0f);
         _blackBishopBitmap = generateBitmapFromSvgData(_blackBishopSvg, cellsSize);
-
-        _blackRookSvg = nsvgParse(Chess_rdt45_svg, "px", 45.0f);
         _blackRookBitmap = generateBitmapFromSvgData(_blackRookSvg, cellsSize);
-
-        _blackQueenSvg = nsvgParse(Chess_qdt45_svg, "px", 45.0f);
         _blackQueenBitmap = generateBitmapFromSvgData(_blackQueenSvg, cellsSize);
-
-        _blackKingSvg = nsvgParse(Chess_kdt45_svg, "px", 45.0f);
         _blackKingBitmap = generateBitmapFromSvgData(_blackKingSvg, cellsSize);
-
-
     }
 
     // Inspired by https://forums.wxwidgets.org/viewtopic.php?t=44708 (wxWidgets forum)
