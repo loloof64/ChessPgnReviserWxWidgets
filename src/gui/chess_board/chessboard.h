@@ -3,38 +3,68 @@
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
-    #include <wx/bitmap.h>
-    #include <wx/colour.h>
-    #include <wx/dc.h>
-    #include <wx/dcclient.h>
-    #include <wx/event.h>
-    #include <wx/gdicmn.h>
-    #include <wx/font.h>
-    #include <wx/panel.h>
-    #include <wx/pen.h>
-    #include <wx/rawbmp.h>
-    #include <wx/string.h>
-    #include <wx/window.h>
+#include <wx/bitmap.h>
+#include <wx/colour.h>
+#include <wx/dc.h>
+#include <wx/dcclient.h>
+#include <wx/event.h>
+#include <wx/gdicmn.h>
+#include <wx/font.h>
+#include <wx/panel.h>
+#include <wx/pen.h>
+#include <wx/rawbmp.h>
+#include <wx/string.h>
+#include <wx/window.h>
 #endif
 
 #include "ThcPosition.h"
 
 struct NSVGimage;
 
-namespace loloof64 {
-    class ChessBoard : public wxPanel {
+namespace loloof64
+{
+
+    struct CellCoordinates
+    {
+        int file = -1, rank = -1;
+        bool isValid()
+        {
+            return file >= 0 && file <= 7 &&
+                   rank >= 0 && rank <= 7;
+        }
+
+        void setInvalid() {
+            file = -1;
+            rank = -1;
+        }
+    };
+
+    struct DragAndDropData
+    {
+        CellCoordinates originCell, targetCell;
+
+        void setInvalid() {
+            originCell.setInvalid();
+            targetCell.setInvalid();
+        }
+    };
+
+    class ChessBoard : public wxPanel
+    {
     public:
         ChessBoard(wxWindow *parent, int size);
-        virtual ~ChessBoard();    
-        void paintEvent(wxPaintEvent & evt);
-        void leftMouseButtonDownEvent(wxMouseEvent & evt);
-        void leftMouseButtonUpEvent(wxMouseEvent & evt);
-        void mouseButtonMotionEvent(wxMouseEvent & evt);
+        virtual ~ChessBoard();
+        void paintEvent(wxPaintEvent &evt);
+        void leftMouseButtonDownEvent(wxMouseEvent &evt);
+        void leftMouseButtonUpEvent(wxMouseEvent &evt);
+        void mouseButtonMotionEvent(wxMouseEvent &evt);
         void refresh();
         void setReversed(bool reversed);
+
     private:
         bool _reversed;
         bool _dndInProgress;
+        DragAndDropData _dndData;
         // Just in order to know if we need to adjusts pieces size,
         // based on paint event dc's size.
         int _currentSize;
@@ -45,9 +75,9 @@ namespace loloof64 {
         int getShortestSize() const;
         wxBitmap generateBitmapFromSvgData(NSVGimage *svgData, int bitmapSize);
         wxBitmap getPieceBitmap(char pieceFen);
-        void render(wxDC& dc);
+        void render(wxDC &dc);
 
-        void drawBackground(wxDC& dc);
+        void drawBackground(wxDC &dc);
         void drawCells(wxDC &dc);
         void drawCoordinates(wxDC &dc);
         void drawPieces(wxDC &dc);
@@ -81,5 +111,5 @@ namespace loloof64 {
 
         wxDECLARE_EVENT_TABLE();
     };
-};
+}; // namespace loloof64
 #endif

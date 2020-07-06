@@ -42,6 +42,7 @@ namespace loloof64
     {
         wxPaintDC dc(this);
         render(dc);
+        evt->Skip();
     }
 
     void ChessBoard::refresh()
@@ -317,19 +318,24 @@ namespace loloof64
     }
 
     void ChessBoard::leftMouseButtonDownEvent(wxMouseEvent &evt) {
+        auto mousePosition = 
         _dndInProgress = true;
-        std::cout << "Start drag" << std::endl;
+
+        evt->Skip();
     }
 
     void ChessBoard::leftMouseButtonUpEvent(wxMouseEvent &evt) {
         _dndInProgress = false;
-        std::cout << "End drag" << std::endl;
+
+        evt->Skip();
     }
 
     void ChessBoard::mouseButtonMotionEvent(wxMouseEvent &evt) {
         if (_dndInProgress) {
-            std::cout << "During drag" << std::endl;
+            
         }
+
+        evt->Skip();
     }
 
     wxBEGIN_EVENT_TABLE(ChessBoard, wxPanel)
