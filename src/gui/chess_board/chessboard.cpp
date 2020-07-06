@@ -88,7 +88,7 @@ namespace loloof64
         wxColour blackCellsColor(209, 139, 71);
 
         wxColour dndOriginCellColor(210, 75, 120, 150);
-        // wxColour dndTargetCellColor(120, 75, 210, 150);
+        wxColour dndTargetCellColor(120, 210, 75, 150);
 
         auto cellsSize = size * 1.0 / 9.0;
 
@@ -104,6 +104,9 @@ namespace loloof64
 
                 auto isDndOriginCell = _dndData.originCell.file == file && _dndData.originCell.rank == rank;
                 if (isDndOriginCell) currentCellColor = dndOriginCellColor;
+
+                auto isDndTargetCell = _dndData.targetCell.file == file && _dndData.targetCell.rank == rank;
+                if (isDndTargetCell) currentCellColor = dndTargetCellColor;
              
                 auto x = (int)cellsSize * (col + 0.5);
                 auto y = (int)cellsSize * (row + 0.5);
@@ -384,7 +387,6 @@ namespace loloof64
     {
         if (_dndInProgress)
         {
-            /*
             auto x = evt.GetX();
             auto y = evt.GetY();
 
@@ -396,7 +398,11 @@ namespace loloof64
 
             auto file = _reversed ? 7 - col : col;
             auto rank = _reversed ? row : 7 - row;
-            */
+
+            _dndData.targetCell.file = file;
+            _dndData.targetCell.rank = rank;
+
+            refresh();
         }
 
         evt.Skip();
