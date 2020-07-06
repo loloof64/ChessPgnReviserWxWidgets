@@ -31,10 +31,9 @@ namespace loloof64 {
         void setReversed(bool reversed);
     private:
         bool _reversed;
-        int _size;
         ThcPosition _boardLogic;
 
-        void loadImages();
+        void loadImages(int size);
         wxBitmap generateBitmapFromSvgData(NSVGimage *svgData, int bitmapSize);
         wxBitmap getPieceBitmap(char pieceFen);
         void render(wxDC& dc);

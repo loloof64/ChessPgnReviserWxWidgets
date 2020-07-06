@@ -26,9 +26,9 @@ std::string DEFAULT_CHESS_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBN
 namespace loloof64
 {
     ChessBoard::ChessBoard(wxWindow *parent, int size) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(size, size)), 
-    _size(size), _boardLogic(DEFAULT_CHESS_POSITION)
+    _boardLogic(DEFAULT_CHESS_POSITION)
     {
-        loadImages();
+        loadImages(size);
     }
 
     ChessBoard::~ChessBoard()
@@ -63,16 +63,20 @@ namespace loloof64
 
     void ChessBoard::drawBackground(wxDC &dc)
     {
+        auto size = dc.GetSize().GetWidth();
+
         wxColour backgroundColor(30, 60, 250);
         dc.SetBrush(backgroundColor);
-        dc.DrawRectangle(0, 0, _size, _size);
+        dc.DrawRectangle(0, 0, size, size);
     }
 
     void ChessBoard::drawCells(wxDC &dc)
     {
+        auto size = dc.GetSize().GetWidth();
+
         wxColour whiteCellsColor(255, 206, 158);
         wxColour blackCellsColor(209, 139, 71);
-        auto cellsSize = _size * 1.0 / 9.0;
+        auto cellsSize = size * 1.0 / 9.0;
 
         for (auto row = 0; row < 8; row++)
         {
@@ -93,7 +97,8 @@ namespace loloof64
 
     void ChessBoard::drawCoordinates(wxDC &dc)
     {
-        auto cellsSize = _size * 1.0 / 9.0;
+        auto size = dc.GetSize().GetWidth();
+        auto cellsSize = size * 1.0 / 9.0;
         auto fontSize = cellsSize * 0.25;
 
         wxColour coordinatesColor(255, 199, 0);
@@ -138,7 +143,8 @@ namespace loloof64
 
     void ChessBoard::drawPieces(wxDC &dc)
     {
-        auto cellsSize = _size * 1.0 / 9.0;
+        auto size = dc.GetSize().GetWidth();
+        auto cellsSize = size * 1.0 / 9.0;
 
         for (auto row = 0; row < 8; row++)
         {
@@ -162,7 +168,8 @@ namespace loloof64
     }
 
     void ChessBoard::drawPlayerTurn(wxDC &dc) {
-        auto cellsSize = _size * 1.0 / 9.0;
+        auto size = dc.GetSize().GetWidth();
+        auto cellsSize = size * 1.0 / 9.0;
         auto whiteTurn = _boardLogic.isWhiteTurn();
         auto color = whiteTurn ? *wxWHITE : *wxBLACK;
 
@@ -174,9 +181,9 @@ namespace loloof64
         dc.DrawCircle(x, y, radius);
     }
 
-    void ChessBoard::loadImages()
+    void ChessBoard::loadImages(int size)
     {
-        auto cellsSize = (int)(_size * 1.0 / 9.0);
+        auto cellsSize = (int)(size * 1.0 / 9.0);
 
         _whitePawnSvg = nsvgParse(Chess_plt45_svg, "px", 45.0f);
         _whitePawnBitmap = generateBitmapFromSvgData(_whitePawnSvg, cellsSize);
