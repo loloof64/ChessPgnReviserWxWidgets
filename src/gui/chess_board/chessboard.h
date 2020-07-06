@@ -34,6 +34,7 @@ namespace loloof64 {
         ThcPosition _boardLogic;
 
         void loadImages(int size);
+        int getShortestSize() const;
         wxBitmap generateBitmapFromSvgData(NSVGimage *svgData, int bitmapSize);
         wxBitmap getPieceBitmap(char pieceFen);
         void render(wxDC& dc);

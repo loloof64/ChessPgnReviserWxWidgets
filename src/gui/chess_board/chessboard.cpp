@@ -63,7 +63,7 @@ namespace loloof64
 
     void ChessBoard::drawBackground(wxDC &dc)
     {
-        auto size = dc.GetSize().GetWidth();
+        auto size = getShortestSize();
 
         wxColour backgroundColor(30, 60, 250);
         dc.SetBrush(backgroundColor);
@@ -72,7 +72,7 @@ namespace loloof64
 
     void ChessBoard::drawCells(wxDC &dc)
     {
-        auto size = dc.GetSize().GetWidth();
+        auto size = getShortestSize();
 
         wxColour whiteCellsColor(255, 206, 158);
         wxColour blackCellsColor(209, 139, 71);
@@ -97,7 +97,7 @@ namespace loloof64
 
     void ChessBoard::drawCoordinates(wxDC &dc)
     {
-        auto size = dc.GetSize().GetWidth();
+        auto size = getShortestSize();
         auto cellsSize = size * 1.0 / 9.0;
         auto fontSize = cellsSize * 0.25;
 
@@ -143,7 +143,7 @@ namespace loloof64
 
     void ChessBoard::drawPieces(wxDC &dc)
     {
-        auto size = dc.GetSize().GetWidth();
+        auto size = getShortestSize();
         auto cellsSize = size * 1.0 / 9.0;
 
         for (auto row = 0; row < 8; row++)
@@ -168,7 +168,7 @@ namespace loloof64
     }
 
     void ChessBoard::drawPlayerTurn(wxDC &dc) {
-        auto size = dc.GetSize().GetWidth();
+        auto size = getShortestSize();
         auto cellsSize = size * 1.0 / 9.0;
         auto whiteTurn = _boardLogic.isWhiteTurn();
         auto color = whiteTurn ? *wxWHITE : *wxBLACK;
@@ -259,6 +259,14 @@ namespace loloof64
         free(image_buffer);
 
         return bitmap;
+    }
+
+    int ChessBoard::getShortestSize() const {
+        auto bothSides = GetSize();
+        auto width = bothSides.GetWidth();
+        auto height = bothSides.GetHeight();
+
+        return width < height ? width : height;
     }
 
     wxBitmap ChessBoard::getPieceBitmap(char pieceFen) {
