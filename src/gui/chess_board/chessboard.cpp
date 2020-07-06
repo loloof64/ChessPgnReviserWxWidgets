@@ -2,10 +2,6 @@
 #include <string>
 #include <cmath>
 
-//////////////////////////
-#include <iostream>
-//////////////////////////
-
 extern "C" char Chess_plt45_svg[];
 extern "C" char Chess_nlt45_svg[];
 extern "C" char Chess_blt45_svg[];
@@ -42,14 +38,14 @@ namespace loloof64
 
     void ChessBoard::paintEvent(wxPaintEvent &evt)
     {
-        wxPaintDC dc(this);
+        wxAutoBufferedPaintDC dc(this);
         render(dc);
         evt.Skip();
     }
 
     void ChessBoard::refresh()
     {
-        wxPaintDC dc(this);
+        wxAutoBufferedPaintDC dc(this);
         render(dc);
     }
 
@@ -90,15 +86,25 @@ namespace loloof64
 
         wxColour whiteCellsColor(255, 206, 158);
         wxColour blackCellsColor(209, 139, 71);
+
+        wxColour dndOriginCellColor(210, 75, 120, 150);
+        // wxColour dndTargetCellColor(120, 75, 210, 150);
+
         auto cellsSize = size * 1.0 / 9.0;
 
         for (auto row = 0; row < 8; row++)
         {
             for (auto col = 0; col < 8; col++)
             {
+                auto file = _reversed ? 7-col : col;
+                auto rank = _reversed ? row : 7-row;
+
                 auto isWhiteCell = (row + col) % 2 == 0;
                 auto currentCellColor = isWhiteCell ? whiteCellsColor : blackCellsColor;
 
+                auto isDndOriginCell = _dndData.originCell.file == file && _dndData.originCell.rank == rank;
+                if (isDndOriginCell) currentCellColor = dndOriginCellColor;
+             
                 auto x = (int)cellsSize * (col + 0.5);
                 auto y = (int)cellsSize * (row + 0.5);
 
@@ -319,7 +325,7 @@ namespace loloof64
         }
     }
 
-    void ChessBoard::leftMouseButtonDownEvent(wxMouseEvent &evt)
+    void ChessBoard::handleDragStart(wxMouseEvent &evt)
     {
         auto x = evt.GetX();
         auto y = evt.GetY();
@@ -338,19 +344,22 @@ namespace loloof64
 
         if (inBounds)
         {
-            ///////////////////////////////////////////////////////////////
-            std::cout << "START: (" << file << ", " << rank << ")" << std::endl;
-            ///////////////////////////////////////////////////////////////
+            _dndData = DragAndDropData();
+            _dndData.originCell.file = file;
+            _dndData.originCell.rank = rank;
+
             _dndInProgress = true;
+            refresh();
         }
 
         evt.Skip();
     }
 
-    void ChessBoard::leftMouseButtonUpEvent(wxMouseEvent &evt)
+    void ChessBoard::handleDragEnd(wxMouseEvent &evt)
     {
         if (!_dndInProgress) return;
         
+        /*
         auto x = evt.GetX();
         auto y = evt.GetY();
 
@@ -362,20 +371,20 @@ namespace loloof64
 
         auto file = _reversed ? 7 - col : col;
         auto rank = _reversed ? row : 7 - row;
-
-        ///////////////////////////////////////////////////////////////
-        std::cout << "END: (" << file << ", " << rank << ")" << std::endl;
-        ///////////////////////////////////////////////////////////////
+        */
 
         _dndInProgress = false;
+        _dndData.setInvalid();
+        refresh();
 
         evt.Skip();
     }
 
-    void ChessBoard::mouseButtonMotionEvent(wxMouseEvent &evt)
+    void ChessBoard::handleDragMove(wxMouseEvent &evt)
     {
         if (_dndInProgress)
         {
+            /*
             auto x = evt.GetX();
             auto y = evt.GetY();
 
@@ -387,10 +396,7 @@ namespace loloof64
 
             auto file = _reversed ? 7 - col : col;
             auto rank = _reversed ? row : 7 - row;
-
-            ///////////////////////////////////////////////////////////////
-            std::cout << "MOVE: (" << file << ", " << rank << ")" << std::endl;
-            ///////////////////////////////////////////////////////////////
+            */
         }
 
         evt.Skip();
@@ -398,8 +404,8 @@ namespace loloof64
 
     wxBEGIN_EVENT_TABLE(ChessBoard, wxPanel)
         EVT_PAINT(ChessBoard::paintEvent)
-            EVT_LEFT_DOWN(ChessBoard::leftMouseButtonDownEvent)
-                EVT_LEFT_UP(ChessBoard::leftMouseButtonUpEvent)
-                    EVT_MOTION(ChessBoard::mouseButtonMotionEvent)
+            EVT_LEFT_DOWN(ChessBoard::handleDragStart)
+                EVT_LEFT_UP(ChessBoard::handleDragEnd)
+                    EVT_MOTION(ChessBoard::handleDragMove)
                         wxEND_EVENT_TABLE()
 } // namespace loloof64

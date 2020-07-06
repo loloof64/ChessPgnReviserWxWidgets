@@ -6,6 +6,7 @@
 #include <wx/bitmap.h>
 #include <wx/colour.h>
 #include <wx/dc.h>
+#include <wx/dcbuffer.h>
 #include <wx/dcclient.h>
 #include <wx/event.h>
 #include <wx/gdicmn.h>
@@ -55,9 +56,9 @@ namespace loloof64
         ChessBoard(wxWindow *parent, int size);
         virtual ~ChessBoard();
         void paintEvent(wxPaintEvent &evt);
-        void leftMouseButtonDownEvent(wxMouseEvent &evt);
-        void leftMouseButtonUpEvent(wxMouseEvent &evt);
-        void mouseButtonMotionEvent(wxMouseEvent &evt);
+        void handleDragStart(wxMouseEvent &evt);
+        void handleDragEnd(wxMouseEvent &evt);
+        void handleDragMove(wxMouseEvent &evt);
         void refresh();
         void setReversed(bool reversed);
 
