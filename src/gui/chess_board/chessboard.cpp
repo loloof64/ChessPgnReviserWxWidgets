@@ -1,5 +1,6 @@
 #include "chessboard.h"
 #include <string>
+#include <cmath>
 
 //////////////////////////
 #include <iostream>
@@ -39,7 +40,8 @@ namespace loloof64
     {
     }
 
-    void ChessBoard::paintEvent(wxPaintEvent &evt) {
+    void ChessBoard::paintEvent(wxPaintEvent &evt)
+    {
         wxPaintDC dc(this);
         render(dc);
         evt.Skip();
@@ -317,22 +319,78 @@ namespace loloof64
         }
     }
 
-    void ChessBoard::leftMouseButtonDownEvent(wxMouseEvent &evt) {
-        //auto mousePosition = 
-        _dndInProgress = true;
+    void ChessBoard::leftMouseButtonDownEvent(wxMouseEvent &evt)
+    {
+        auto x = evt.GetX();
+        auto y = evt.GetY();
+
+        auto size = getShortestSize();
+        auto cellsSize = size * 1.0 / 9.0;
+
+        auto col = (int) floor((x * 1.0 - cellsSize * 0.5) / cellsSize);
+        auto row = (int) floor((y * 1.0 - cellsSize * 0.5) / cellsSize);
+
+        auto file = _reversed ? 7 - col : col;
+        auto rank = _reversed ? row : 7 - row;
+
+
+        auto inBounds = file >= 0 && file <= 7 && rank >= 0 && rank <= 7;
+
+        if (inBounds)
+        {
+            ///////////////////////////////////////////////////////////////
+            std::cout << "START: (" << file << ", " << rank << ")" << std::endl;
+            ///////////////////////////////////////////////////////////////
+            _dndInProgress = true;
+        }
 
         evt.Skip();
     }
 
-    void ChessBoard::leftMouseButtonUpEvent(wxMouseEvent &evt) {
+    void ChessBoard::leftMouseButtonUpEvent(wxMouseEvent &evt)
+    {
+        if (!_dndInProgress) return;
+        
+        auto x = evt.GetX();
+        auto y = evt.GetY();
+
+        auto size = getShortestSize();
+        auto cellsSize = size * 1.0 / 9.0;
+
+        auto col = (int) floor((x * 1.0 - cellsSize * 0.5) / cellsSize);
+        auto row = (int) floor((y * 1.0 - cellsSize * 0.5) / cellsSize);
+
+        auto file = _reversed ? 7 - col : col;
+        auto rank = _reversed ? row : 7 - row;
+
+        ///////////////////////////////////////////////////////////////
+        std::cout << "END: (" << file << ", " << rank << ")" << std::endl;
+        ///////////////////////////////////////////////////////////////
+
         _dndInProgress = false;
 
         evt.Skip();
     }
 
-    void ChessBoard::mouseButtonMotionEvent(wxMouseEvent &evt) {
-        if (_dndInProgress) {
-            
+    void ChessBoard::mouseButtonMotionEvent(wxMouseEvent &evt)
+    {
+        if (_dndInProgress)
+        {
+            auto x = evt.GetX();
+            auto y = evt.GetY();
+
+            auto size = getShortestSize();
+            auto cellsSize = size * 1.0 / 9.0;
+
+            auto col = (int) floor((x * 1.0 - cellsSize * 0.5) / cellsSize);
+            auto row = (int) floor((y * 1.0 - cellsSize * 0.5) / cellsSize);
+
+            auto file = _reversed ? 7 - col : col;
+            auto rank = _reversed ? row : 7 - row;
+
+            ///////////////////////////////////////////////////////////////
+            std::cout << "MOVE: (" << file << ", " << rank << ")" << std::endl;
+            ///////////////////////////////////////////////////////////////
         }
 
         evt.Skip();
@@ -340,8 +398,8 @@ namespace loloof64
 
     wxBEGIN_EVENT_TABLE(ChessBoard, wxPanel)
         EVT_PAINT(ChessBoard::paintEvent)
-        EVT_LEFT_DOWN(ChessBoard::leftMouseButtonDownEvent)
-        EVT_LEFT_UP(ChessBoard::leftMouseButtonUpEvent)
-        EVT_MOTION(ChessBoard::mouseButtonMotionEvent)
-    wxEND_EVENT_TABLE()
+            EVT_LEFT_DOWN(ChessBoard::leftMouseButtonDownEvent)
+                EVT_LEFT_UP(ChessBoard::leftMouseButtonUpEvent)
+                    EVT_MOTION(ChessBoard::mouseButtonMotionEvent)
+                        wxEND_EVENT_TABLE()
 } // namespace loloof64
