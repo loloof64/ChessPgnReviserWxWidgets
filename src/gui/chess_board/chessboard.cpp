@@ -173,7 +173,10 @@ namespace loloof64
 
                 auto pieceFen = _boardLogic.getPieceFenAt(file, rank);
                 auto isOccupiedCell = pieceFen != EMPTY_PIECE_FEN;
-                if (isOccupiedCell)
+                auto isNotDragAndDropOrigin = _dndData.originCell.file != file ||
+                    _dndData.originCell.rank != rank;
+
+                if (isOccupiedCell && isNotDragAndDropOrigin)
                 {
                     auto x = (int)cellsSize * (col + 0.5);
                     auto y = (int)cellsSize * (row + 0.5);
