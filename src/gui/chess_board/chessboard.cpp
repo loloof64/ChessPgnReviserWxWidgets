@@ -337,11 +337,17 @@ namespace loloof64
         auto file = _reversed ? 7 - col : col;
         auto rank = _reversed ? row : 7 - row;
 
+        auto ASCII_UPPER_A = 65;
+        auto ASCII_UPPER_Z = 90;
 
         auto inBounds = file >= 0 && file <= 7 && rank >= 0 && rank <= 7;
-        auto isOccupiedCell = _boardLogic.getPieceFenAt(file, rank) != EMPTY_PIECE_FEN;
+        auto pieceAtCell = _boardLogic.getPieceFenAt(file ,rank);
+        auto isWhiteTurn = _boardLogic.isWhiteTurn();
+        auto isWhitePiece = pieceAtCell >= ASCII_UPPER_A && pieceAtCell <= ASCII_UPPER_Z;
+        auto isSideInTurnPiece = pieceAtCell != EMPTY_PIECE_FEN &&
+            isWhiteTurn == isWhitePiece;
 
-        if (inBounds && isOccupiedCell)
+        if (inBounds && isSideInTurnPiece)
         {
             _dndData = DragAndDropData();
             _dndData.originCell.file = file;
