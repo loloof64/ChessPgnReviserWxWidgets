@@ -84,6 +84,7 @@ namespace loloof64
 
         wxColour dndOriginCellColor(210, 75, 120, 150);
         wxColour dndTargetCellColor(120, 210, 75, 150);
+        wxColour dndCrossCellColor(120, 60, 255, 180);
 
         auto cellsSize = size * 1.0 / 9.0;
 
@@ -96,6 +97,9 @@ namespace loloof64
 
                 auto isWhiteCell = (row + col) % 2 == 0;
                 auto currentCellColor = isWhiteCell ? whiteCellsColor : blackCellsColor;
+
+                auto isDndCrossCell = _dndData.targetCell.file == file || _dndData.targetCell.rank == rank;
+                if (isDndCrossCell) currentCellColor = dndCrossCellColor;
 
                 auto isDndOriginCell = _dndData.originCell.file == file && _dndData.originCell.rank == rank;
                 if (isDndOriginCell) currentCellColor = dndOriginCellColor;
