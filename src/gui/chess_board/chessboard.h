@@ -43,11 +43,15 @@ namespace loloof64
 
     struct DragAndDropData
     {
+        int movedPieceX = -1000, movedPieceY = -1000;
+        wxBitmap movedPieceImage;
         CellCoordinates originCell, targetCell;
 
         void setInvalid() {
             originCell.setInvalid();
             targetCell.setInvalid();
+            movedPieceX = -1000;
+            movedPieceY = -1000;
         }
     };
 
@@ -65,6 +69,7 @@ namespace loloof64
     private:
         bool _reversed;
         bool _dndInProgress;
+        bool _isPendingPromotion;
         DragAndDropData _dndData;
         // Just in order to know if we need to adjusts pieces size,
         // based on paint event dc's size.
@@ -83,6 +88,7 @@ namespace loloof64
         void drawCoordinates(wxDC &dc);
         void drawPieces(wxDC &dc);
         void drawPlayerTurn(wxDC &dc);
+        void drawMovedPiece(wxDC &dc);
 
         NSVGimage *_whitePawnSvg;
         NSVGimage *_whiteKnightSvg;

@@ -63,6 +63,7 @@ namespace loloof64
         drawCells(dc);
         drawCoordinates(dc);
         drawPieces(dc);
+        drawMovedPiece(dc);
         drawPlayerTurn(dc);
     }
 
@@ -210,6 +211,18 @@ namespace loloof64
         dc.DrawCircle(x, y, radius);
     }
 
+    void ChessBoard::drawMovedPiece(wxDC &dc)
+    {
+        if (_dndInProgress)
+        {
+            dc.DrawBitmap(
+                _dndData.movedPieceImage,
+                _dndData.movedPieceX,
+                _dndData.movedPieceY,
+                true);
+        }
+    }
+
     void ChessBoard::loadImages(int size)
     {
         _whitePawnSvg = nsvgParse(Chess_plt45_svg, "px", 45.0f);
@@ -335,6 +348,9 @@ namespace loloof64
 
     void ChessBoard::handleDragStart(wxMouseEvent &evt)
     {
+        if (_isPendingPromotion)
+            return;
+
         auto x = evt.GetX();
         auto y = evt.GetY();
 
@@ -362,9 +378,11 @@ namespace loloof64
             _dndData = DragAndDropData();
             _dndData.originCell.file = file;
             _dndData.originCell.rank = rank;
+            _dndData.movedPieceX = (int) (x - cellsSize * 0.5);
+            _dndData.movedPieceY = (int) (y - cellsSize * 0.5);
+            _dndData.movedPieceImage = getPieceBitmap(pieceAtCell);
 
             _dndInProgress = true;
-            SetCursor(wxCursor(getPieceBitmap(pieceAtCell).ConvertToImage()));
             Refresh();
         }
 
@@ -373,6 +391,8 @@ namespace loloof64
 
     void ChessBoard::handleDragEnd(wxMouseEvent &evt)
     {
+        if (_isPendingPromotion)
+            return;
         if (!_dndInProgress)
             return;
 
@@ -391,6 +411,20 @@ namespace loloof64
         _dndData.targetCell.file = file;
         _dndData.targetCell.rank = rank;
 
+        _dndData.movedPieceX = (int)(x - cellsSize * 0.5);
+        _dndData.movedPieceY = (int)(y - cellsSize * 0.5);
+
+        auto isPromotionMove = _boardLogic.isPromotionMove(
+            _dndData.originCell.file,
+            _dndData.originCell.rank,
+            _dndData.targetCell.file,
+            _dndData.targetCell.rank);
+        if (isPromotionMove)
+        {
+            _isPendingPromotion = true;
+            return;
+        }
+
         auto isLegalMove = _boardLogic.isLegalMove(
             _dndData.originCell.file,
             _dndData.originCell.rank,
@@ -407,7 +441,6 @@ namespace loloof64
 
         _dndInProgress = false;
         _dndData.setInvalid();
-        SetCursor(wxNullCursor);
         Refresh();
 
         evt.Skip();
@@ -415,6 +448,8 @@ namespace loloof64
 
     void ChessBoard::handleDragMove(wxMouseEvent &evt)
     {
+        if (_isPendingPromotion)
+            return;
         if (_dndInProgress)
         {
             auto x = evt.GetX();
@@ -431,6 +466,9 @@ namespace loloof64
 
             _dndData.targetCell.file = file;
             _dndData.targetCell.rank = rank;
+
+            _dndData.movedPieceX = (int)(x - cellsSize * 0.5);
+            _dndData.movedPieceY = (int)(y - cellsSize * 0.5);
 
             Refresh();
         }
