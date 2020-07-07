@@ -354,6 +354,7 @@ namespace loloof64
             _dndData.originCell.rank = rank;
 
             _dndInProgress = true;
+            SetCursor(wxCursor(getPieceBitmap(pieceAtCell).ConvertToImage()));
             Refresh();
         }
 
@@ -380,6 +381,7 @@ namespace loloof64
 
         _dndInProgress = false;
         _dndData.setInvalid();
+        SetCursor(wxNullCursor);
         Refresh();
 
         evt.Skip();

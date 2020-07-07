@@ -9,8 +9,9 @@
 #include <wx/dcbuffer.h>
 #include <wx/dcclient.h>
 #include <wx/event.h>
-#include <wx/gdicmn.h>
 #include <wx/font.h>
+#include <wx/gdicmn.h>
+#include <wx/image.h>
 #include <wx/panel.h>
 #include <wx/pen.h>
 #include <wx/rawbmp.h>
