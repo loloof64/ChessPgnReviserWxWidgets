@@ -21,6 +21,7 @@ extern "C" char Chess_kdt45_svg[];
 #define NANOSVGRAST_IMPLEMENTATION
 #include "nanosvgrast.h"
 
+const char EMPTY_PIECE_FEN = ' ';
 std::string DEFAULT_CHESS_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 namespace loloof64
@@ -171,7 +172,7 @@ namespace loloof64
                 auto rank = _reversed ? row : 7 - row;
 
                 auto pieceFen = _boardLogic.getPieceFenAt(file, rank);
-                auto isOccupiedCell = pieceFen != ' ';
+                auto isOccupiedCell = pieceFen != EMPTY_PIECE_FEN;
                 if (isOccupiedCell)
                 {
                     auto x = (int)cellsSize * (col + 0.5);
@@ -338,8 +339,9 @@ namespace loloof64
 
 
         auto inBounds = file >= 0 && file <= 7 && rank >= 0 && rank <= 7;
+        auto isOccupiedCell = _boardLogic.getPieceFenAt(file, rank) != EMPTY_PIECE_FEN;
 
-        if (inBounds)
+        if (inBounds && isOccupiedCell)
         {
             _dndData = DragAndDropData();
             _dndData.originCell.file = file;
