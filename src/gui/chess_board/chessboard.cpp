@@ -431,7 +431,11 @@ namespace loloof64
                 isWhiteTurn ? _whiteKnightBitmap : _blackKnightBitmap,
                 isWhiteTurn ? _whiteBishopBitmap : _blackBishopBitmap,
                 isWhiteTurn ? _whiteRookBitmap : _blackRookBitmap,
-                isWhiteTurn ? _whiteQueenBitmap : _blackQueenBitmap);
+                isWhiteTurn ? _whiteQueenBitmap : _blackQueenBitmap,
+                [this]() { commitKnightPromotion(); },
+                [this]() { commitBishopPromotion(); },
+                [this]() { commitRookPromotion(); },
+                [this]() { commitQueenPromotion(); });
             promotionChooser.ShowModal();
             return;
         }
@@ -485,6 +489,70 @@ namespace loloof64
         }
 
         evt.Skip();
+    }
+
+    void ChessBoard::commitKnightPromotion()
+    {
+        if (!_isPendingPromotion) return;
+        _boardLogic.makeMove(
+            _dndData.originCell.file,
+            _dndData.originCell.rank,
+            _dndData.targetCell.file,
+            _dndData.targetCell.rank, 'n');
+
+        _dndInProgress = false;
+        _dndData.setInvalid();
+        
+        _isPendingPromotion = false;
+        Refresh();
+    }
+
+    void ChessBoard::commitBishopPromotion()
+    {
+        if (!_isPendingPromotion) return;
+        _boardLogic.makeMove(
+            _dndData.originCell.file,
+            _dndData.originCell.rank,
+            _dndData.targetCell.file,
+            _dndData.targetCell.rank, 'b');
+
+        _dndInProgress = false;
+        _dndData.setInvalid();
+
+        _isPendingPromotion = false;
+        Refresh();
+    }
+
+    void ChessBoard::commitRookPromotion()
+    {
+        if (!_isPendingPromotion) return;
+        _boardLogic.makeMove(
+            _dndData.originCell.file,
+            _dndData.originCell.rank,
+            _dndData.targetCell.file,
+            _dndData.targetCell.rank, 'r');
+
+        _dndInProgress = false;
+        _dndData.setInvalid();
+
+        _isPendingPromotion = false;
+        Refresh();
+    }
+
+    void ChessBoard::commitQueenPromotion()
+    {
+        if (!_isPendingPromotion) return;
+        _boardLogic.makeMove(
+            _dndData.originCell.file,
+            _dndData.originCell.rank,
+            _dndData.targetCell.file,
+            _dndData.targetCell.rank, 'q');
+
+        _dndInProgress = false;
+        _dndData.setInvalid();
+
+        _isPendingPromotion = false;
+        Refresh();
     }
 
     wxBEGIN_EVENT_TABLE(ChessBoard, wxPanel)

@@ -88,6 +88,11 @@ namespace loloof64
         void drawPieces(wxDC &dc);
         void drawPlayerTurn(wxDC &dc);
         void drawMovedPiece(wxDC &dc);
+        
+        void commitKnightPromotion();
+        void commitBishopPromotion();
+        void commitRookPromotion();
+        void commitQueenPromotion();
 
         NSVGimage *_whitePawnSvg;
         NSVGimage *_whiteKnightSvg;

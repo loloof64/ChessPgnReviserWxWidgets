@@ -10,12 +10,19 @@ namespace loloof64
     PromotionDialog::PromotionDialog(
         wxWindow *parent, const wxString &title,
         wxBitmap knightBitmap, wxBitmap bishopBitmap,
-        wxBitmap rookBitmap, wxBitmap queenBitmap) : 
-        wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxCAPTION),
-                                                     _knightBitmap(knightBitmap),
-                                                     _bishopBitmap(bishopBitmap),
-                                                     _rookBitmap(rookBitmap),
-                                                     _queenBitmap(queenBitmap)
+        wxBitmap rookBitmap, wxBitmap queenBitmap,
+        std::function<void()> knightCallBack,
+        std::function<void()> bishopCallBack,
+        std::function<void()> rookCallBack,
+        std::function<void()> queenCallBack) : wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxCAPTION),
+                                               _knightBitmap(knightBitmap),
+                                               _bishopBitmap(bishopBitmap),
+                                               _rookBitmap(rookBitmap),
+                                               _queenBitmap(queenBitmap),
+                                               _knightCallback(knightCallBack),
+                                               _bishopCallback(bishopCallBack),
+                                               _rookCallback(rookCallBack),
+                                               _queenCallback(queenCallBack)
     {
         wxSizer *mainSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -34,21 +41,25 @@ namespace loloof64
 
     void PromotionDialog::handleQueenSelection(wxCommandEvent &event)
     {
+        _queenCallback();
         Close();
     }
 
     void PromotionDialog::handleRookSelection(wxCommandEvent &event)
     {
+        _rookCallback();
         Close();
     }
 
     void PromotionDialog::handleBishopSelection(wxCommandEvent &event)
     {
+        _bishopCallback();
         Close();
     }
 
     void PromotionDialog::handleKnightSelection(wxCommandEvent &event)
     {
+        _knightCallback();
         Close();
     }
 
