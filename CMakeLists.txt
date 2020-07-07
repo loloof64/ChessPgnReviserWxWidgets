@@ -39,6 +39,7 @@ set(SRCS
     src/gui/chess_board/chessboard.cpp
     src/gui/chess_board/ThcPosition.cpp
     src/gui/chess_board/pieces_resources.c
+    src/gui/chess_board/promotiondialog.cpp
     src/gui/main_window.cpp
     src/libs/thc-chess-library/ChessPosition.cpp
     src/libs/thc-chess-library/ChessRules.cpp
@@ -53,6 +54,7 @@ set(HEADERS
     src/gui/chess_board/ThcPosition.h
     src/gui/chess_board/nanosvg.h
     src/gui/chess_board/nanosvgrast.h
+    src/gui/chess_board/promotiondialog.h
     src/gui/main_window.h
     src/libs/thc-chess-library/ChessDefs.h
     src/libs/thc-chess-library/ChessPosition.h

@@ -1,4 +1,6 @@
 #include "chessboard.h"
+#include "promotiondialog.h"
+
 #include <string>
 #include <cmath>
 
@@ -378,8 +380,8 @@ namespace loloof64
             _dndData = DragAndDropData();
             _dndData.originCell.file = file;
             _dndData.originCell.rank = rank;
-            _dndData.movedPieceX = (int) (x - cellsSize * 0.5);
-            _dndData.movedPieceY = (int) (y - cellsSize * 0.5);
+            _dndData.movedPieceX = (int)(x - cellsSize * 0.5);
+            _dndData.movedPieceY = (int)(y - cellsSize * 0.5);
             _dndData.movedPieceImage = getPieceBitmap(pieceAtCell);
 
             _dndInProgress = true;
@@ -419,9 +421,18 @@ namespace loloof64
             _dndData.originCell.rank,
             _dndData.targetCell.file,
             _dndData.targetCell.rank);
+        auto isWhiteTurn = _boardLogic.isWhiteTurn();
+
         if (isPromotionMove)
         {
             _isPendingPromotion = true;
+            PromotionDialog promotionChooser(
+                this, wxString("Choose the promotion piece"),
+                isWhiteTurn ? _whiteKnightBitmap : _blackKnightBitmap,
+                isWhiteTurn ? _whiteBishopBitmap : _blackBishopBitmap,
+                isWhiteTurn ? _whiteRookBitmap : _blackRookBitmap,
+                isWhiteTurn ? _whiteQueenBitmap : _blackQueenBitmap);
+            promotionChooser.ShowModal();
             return;
         }
 
