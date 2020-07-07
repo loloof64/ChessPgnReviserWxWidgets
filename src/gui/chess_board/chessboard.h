@@ -59,7 +59,6 @@ namespace loloof64
         void handleDragStart(wxMouseEvent &evt);
         void handleDragEnd(wxMouseEvent &evt);
         void handleDragMove(wxMouseEvent &evt);
-        void refresh();
         void setReversed(bool reversed);
 
     private:

@@ -43,16 +43,10 @@ namespace loloof64
         evt.Skip();
     }
 
-    void ChessBoard::refresh()
-    {
-        wxAutoBufferedPaintDC dc(this);
-        render(dc);
-    }
-
     void ChessBoard::setReversed(bool reversed)
     {
         _reversed = reversed;
-        refresh();
+        Refresh();
     }
 
     void ChessBoard::render(wxDC &dc)
@@ -352,7 +346,7 @@ namespace loloof64
             _dndData.originCell.rank = rank;
 
             _dndInProgress = true;
-            refresh();
+            Refresh();
         }
 
         evt.Skip();
@@ -378,7 +372,7 @@ namespace loloof64
 
         _dndInProgress = false;
         _dndData.setInvalid();
-        refresh();
+        Refresh();
 
         evt.Skip();
     }
@@ -402,7 +396,7 @@ namespace loloof64
             _dndData.targetCell.file = file;
             _dndData.targetCell.rank = rank;
 
-            refresh();
+            Refresh();
         }
 
         evt.Skip();
