@@ -92,21 +92,24 @@ namespace loloof64
         {
             for (auto col = 0; col < 8; col++)
             {
-                auto file = _reversed ? 7-col : col;
-                auto rank = _reversed ? row : 7-row;
+                auto file = _reversed ? 7 - col : col;
+                auto rank = _reversed ? row : 7 - row;
 
                 auto isWhiteCell = (row + col) % 2 == 0;
                 auto currentCellColor = isWhiteCell ? whiteCellsColor : blackCellsColor;
 
                 auto isDndCrossCell = _dndData.targetCell.file == file || _dndData.targetCell.rank == rank;
-                if (isDndCrossCell) currentCellColor = dndCrossCellColor;
+                if (isDndCrossCell)
+                    currentCellColor = dndCrossCellColor;
 
                 auto isDndOriginCell = _dndData.originCell.file == file && _dndData.originCell.rank == rank;
-                if (isDndOriginCell) currentCellColor = dndOriginCellColor;
+                if (isDndOriginCell)
+                    currentCellColor = dndOriginCellColor;
 
                 auto isDndTargetCell = _dndData.targetCell.file == file && _dndData.targetCell.rank == rank;
-                if (isDndTargetCell) currentCellColor = dndTargetCellColor;
-             
+                if (isDndTargetCell)
+                    currentCellColor = dndTargetCellColor;
+
                 auto x = (int)cellsSize * (col + 0.5);
                 auto y = (int)cellsSize * (row + 0.5);
 
@@ -178,7 +181,7 @@ namespace loloof64
                 auto pieceFen = _boardLogic.getPieceFenAt(file, rank);
                 auto isOccupiedCell = pieceFen != EMPTY_PIECE_FEN;
                 auto isNotDragAndDropOrigin = _dndData.originCell.file != file ||
-                    _dndData.originCell.rank != rank;
+                                              _dndData.originCell.rank != rank;
 
                 if (isOccupiedCell && isNotDragAndDropOrigin)
                 {
@@ -338,8 +341,8 @@ namespace loloof64
         auto size = getShortestSize();
         auto cellsSize = size * 1.0 / 9.0;
 
-        auto col = (int) floor((x * 1.0 - cellsSize * 0.5) / cellsSize);
-        auto row = (int) floor((y * 1.0 - cellsSize * 0.5) / cellsSize);
+        auto col = (int)floor((x * 1.0 - cellsSize * 0.5) / cellsSize);
+        auto row = (int)floor((y * 1.0 - cellsSize * 0.5) / cellsSize);
 
         auto file = _reversed ? 7 - col : col;
         auto rank = _reversed ? row : 7 - row;
@@ -348,11 +351,11 @@ namespace loloof64
         auto ASCII_UPPER_Z = 90;
 
         auto inBounds = file >= 0 && file <= 7 && rank >= 0 && rank <= 7;
-        auto pieceAtCell = _boardLogic.getPieceFenAt(file ,rank);
+        auto pieceAtCell = _boardLogic.getPieceFenAt(file, rank);
         auto isWhiteTurn = _boardLogic.isWhiteTurn();
         auto isWhitePiece = pieceAtCell >= ASCII_UPPER_A && pieceAtCell <= ASCII_UPPER_Z;
         auto isSideInTurnPiece = pieceAtCell != EMPTY_PIECE_FEN &&
-            isWhiteTurn == isWhitePiece;
+                                 isWhiteTurn == isWhitePiece;
 
         if (inBounds && isSideInTurnPiece)
         {
@@ -370,21 +373,37 @@ namespace loloof64
 
     void ChessBoard::handleDragEnd(wxMouseEvent &evt)
     {
-        if (!_dndInProgress) return;
-        
-        /*
+        if (!_dndInProgress)
+            return;
+
         auto x = evt.GetX();
         auto y = evt.GetY();
 
         auto size = getShortestSize();
         auto cellsSize = size * 1.0 / 9.0;
 
-        auto col = (int) floor((x * 1.0 - cellsSize * 0.5) / cellsSize);
-        auto row = (int) floor((y * 1.0 - cellsSize * 0.5) / cellsSize);
+        auto col = (int)floor((x * 1.0 - cellsSize * 0.5) / cellsSize);
+        auto row = (int)floor((y * 1.0 - cellsSize * 0.5) / cellsSize);
 
         auto file = _reversed ? 7 - col : col;
         auto rank = _reversed ? row : 7 - row;
-        */
+
+        _dndData.targetCell.file = file;
+        _dndData.targetCell.rank = rank;
+
+        auto isLegalMove = _boardLogic.isLegalMove(
+            _dndData.originCell.file,
+            _dndData.originCell.rank,
+            _dndData.targetCell.file,
+            _dndData.targetCell.rank);
+        if (isLegalMove)
+        {
+            _boardLogic.makeMove(
+                _dndData.originCell.file,
+                _dndData.originCell.rank,
+                _dndData.targetCell.file,
+                _dndData.targetCell.rank);
+        }
 
         _dndInProgress = false;
         _dndData.setInvalid();
@@ -404,8 +423,8 @@ namespace loloof64
             auto size = getShortestSize();
             auto cellsSize = size * 1.0 / 9.0;
 
-            auto col = (int) floor((x * 1.0 - cellsSize * 0.5) / cellsSize);
-            auto row = (int) floor((y * 1.0 - cellsSize * 0.5) / cellsSize);
+            auto col = (int)floor((x * 1.0 - cellsSize * 0.5) / cellsSize);
+            auto row = (int)floor((y * 1.0 - cellsSize * 0.5) / cellsSize);
 
             auto file = _reversed ? 7 - col : col;
             auto rank = _reversed ? row : 7 - row;
